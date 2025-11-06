@@ -40,7 +40,7 @@ const Hero = ({ mockupImageSrc }) => {
 
             <div className="mt-10 sm:flex sm:justify-center md:justify-start">
               <a
-                href="/audit-application#contact"
+                href="#contact"
                 className={`w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 border border-transparent text-lg font-bold rounded-xl text-white ${accentColorClasses} transition duration-300 shadow-2xl transform hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-opacity-70`}
               >
                 👉 Get a Free Website Audit (no calls required) &rarr;
