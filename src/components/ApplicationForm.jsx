@@ -43,13 +43,14 @@ const ApplicationForm = () => {
     }
 
     setScore(currentScore);
+    setSubmitted(true);
 
     // --- 2. SUBMIT DATA TO NETLIFY ---
     try {
       // Use FormData to capture all fields, including the hidden netlify-related fields
       const formElement = e.target;
 
-      const response = await fetch(formElement.action, {
+      const response = await fetch("/", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams(new FormData(formElement)).toString(),
@@ -60,13 +61,13 @@ const ApplicationForm = () => {
         window.location.href = formElement.action;
       } else {
         alert("Submission failed. Please check your inputs and try again.");
+        setSubmitted(false);
       }
     } catch (error) {
       console.error("Submission error:", error);
       alert("Submission failed due to a network error.");
+      setSubmitted(false);
     }
-
-    setSubmitted(true);
   };
 
   const handleChange = (e) => {
