@@ -20,10 +20,8 @@ const ApplicationForm = () => {
   const [submitted, setSubmitted] = useState(false); // To prevent double submission/show loading
 
   // --- FORM HANDLER: Sends data to Netlify and redirects on success ---
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // 1. Calculate Internal Score (Kept for console logging/internal use)
+  const handleSubmit = (e) => {
+    // 1. Calculate Internal Score (Kept for internal use/optional logging)
     let currentScore = 0;
 
     if (formData.monthlyRevenue === ">$5k") {
@@ -43,31 +41,10 @@ const ApplicationForm = () => {
     }
 
     setScore(currentScore);
-    setSubmitted(true);
+    setSubmitted(true); // Disable button to prevent double click
 
-    // --- 2. SUBMIT DATA TO NETLIFY ---
-    try {
-      // Use FormData to capture all fields, including the hidden netlify-related fields
-      const formElement = e.target;
-
-      const response = await fetch("/", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(new FormData(formElement)).toString(),
-      });
-
-      if (response.ok) {
-        // SUCCESS: Redirects to your confirmation page
-        window.location.href = formElement.action;
-      } else {
-        alert("Submission failed. Please check your inputs and try again.");
-        setSubmitted(false);
-      }
-    } catch (error) {
-      console.error("Submission error:", error);
-      alert("Submission failed due to a network error.");
-      setSubmitted(false);
-    }
+    // CRITICAL: We DO NOT call e.preventDefault() or fetch().
+    // We let the browser submit the HTML form. Netlify catches it.
   };
 
   const handleChange = (e) => {
@@ -87,7 +64,6 @@ const ApplicationForm = () => {
     { value: ">$5k", label: "$5,000+/mo" },
   ];
 
-  // Using Dark Teal for consistency with premium aesthetic
   const accentColorClasses =
     "bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500";
 

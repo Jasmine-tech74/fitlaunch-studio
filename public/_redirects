@@ -1,1 +1,5 @@
-/* /index.html   200
+# FORWARD form submissions that use the action="/audit-thank-you"
+/audit-thank-you /audit-thank-you 200!
+
+# SPA FALLBACK: All other non-found paths should route to index.html
+/* /index.html 200
