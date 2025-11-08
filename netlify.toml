@@ -16,6 +16,7 @@
   from = "/audit-thank-you"
   to = "/index.html"
   status = 200
+  force = true
 
 [[redirects]]
   from = "/*"
