@@ -6,17 +6,11 @@
 # This explicitly tells Netlify to expect a form with this name and these fields
 [forms]
   name = "website-audit-application"
-  # Set the success page here using the built-in Netlify method
-  # Note: The 'action' in the HTML form should still be '/' or '/audit-thank-you'
-  # but this .toml file provides the definitive success path.
-  success = "/audit-thank-you"
+  # Set the success page to the new static HTML file
+  success = "/audit-thank-you.html"
 
 # Redirects (Mirroring your _redirects file for authority)
-[[redirects]]
-  from = "/audit-thank-you"
-  to = "/index.html"
-  status = 200
-  force = true
+
 
 [[redirects]]
   from = "/*"
