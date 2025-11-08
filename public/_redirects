@@ -1,1 +1,5 @@
+# REQUIRED for successful form submission redirect (200 status)
+/audit-thank-you /index.html 200
+
+# SPA Fallback for all other routes
 /* /index.html 200
