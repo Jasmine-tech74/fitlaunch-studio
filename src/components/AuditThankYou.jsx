@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const AuditThankYou = () => {
   const accentColor = "text-indigo-600";
@@ -55,12 +56,12 @@ const AuditThankYou = () => {
             <h2 className="text-2xl font-semibold text-gray-900 mb-4">
               In the meantime, learn how our systems work:
             </h2>
-            <a
-              href="#process" // Link to your Process or Case Studies section
+            <Link
+              to="/process"
               className={`w-full sm:w-auto inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-lg text-white ${accentBg} transition duration-300 shadow-md`}
             >
               See Our 5-Step System →
-            </a>
+            </Link>
           </div>
         </div>
       </div>

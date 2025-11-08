@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+// 🚨 CRITICAL: Import Link for all internal navigation
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -7,38 +9,46 @@ const Navbar = () => {
     setIsOpen(!isOpen);
   };
 
+  // Paths are updated to start with '/' for smooth navigation from any page,
+  // then include the hash for scrolling on the homepage.
   const navLinks = [
-    { name: "Packages", href: "#packages" },
-    { name: "Case Studies", href: "#casestudies" },
-    { name: "Process", href: "#process" },
-    { name: "FAQ", href: "#faq" },
+    { name: "Packages", to: "/#packages" },
+    { name: "Case Studies", to: "/#casestudies" },
+    { name: "Process", to: "/#process" },
+    { name: "FAQ", to: "/#faq" },
   ];
+
+  // Assuming the audit page is /audit-application
+  const auditPath = "/audit-application";
 
   return (
     <nav className="sticky top-0 z-50 bg-white shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0">
-            <a href="/" className="text-2xl font-bold text-indigo-600">
+            {/* 1. Logo Link: Use <Link> */}
+            <Link to="/" className="text-2xl font-bold text-indigo-600">
               FitLaunch Studio
-            </a>
+            </Link>
           </div>
           <div className="hidden md:flex md:space-x-8 items-center">
             {navLinks.map((item) => (
-              <a
+              // 2. Desktop Nav Links: Use <Link>
+              <Link
                 key={item.name}
-                href={item.href}
+                to={item.to}
                 className="text-gray-600 hover:text-indigo-600 font-medium transition duration-150"
               >
                 {item.name}
-              </a>
+              </Link>
             ))}
-            <a
-              href="#contact"
+            {/* 3. Desktop CTA Button: Use <Link> */}
+            <Link
+              to={auditPath}
               className="ml-4 py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 transition duration-150"
             >
               Get Your Website Audit
-            </a>
+            </Link>
           </div>
           <div className="flex md:hidden">
             <button
@@ -84,22 +94,23 @@ const Navbar = () => {
       >
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
           {navLinks.map((item) => (
-            <a
+            <Link
               key={item.name}
-              href={item.href}
+              to={item.to}
               onClick={toggleMenu}
               className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
             >
               {item.name}
-            </a>
+            </Link>
           ))}
-          <a
-            href="#contact"
+          {/* 5. Mobile CTA Button: Use <Link> */}
+          <Link
+            to={auditPath}
             onClick={toggleMenu}
             className="block w-full text-center py-2 px-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 mt-2"
           >
             Get a Free Website Audit
-          </a>
+          </Link>
         </div>
       </div>
     </nav>
