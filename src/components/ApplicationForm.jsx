@@ -84,7 +84,7 @@ const ApplicationForm = () => {
         name="website-audit-application"
         method="POST"
         data-netlify="true"
-        action="/"
+        action="/audit-thank-you"
       >
         {/* Hidden field is required by Netlify to identify the form */}
         <input
@@ -92,8 +92,6 @@ const ApplicationForm = () => {
           name="form-name"
           value="website-audit-application"
         />
-        {/* 🚨 CRITICAL: The hidden success field for HTML POST */}
-        <input type="hidden" name="redirectTo" value="/audit-thank-you" />
 
         {/* === SECTION 1: CONTACT INFORMATION === */}
         <h3 className="text-xl font-semibold text-gray-800 border-b pb-2 mb-4">
