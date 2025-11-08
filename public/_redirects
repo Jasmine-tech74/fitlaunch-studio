@@ -1,5 +1,5 @@
-# REQUIRED for successful form submission redirect (200 status)
+# 1. SUCCESS REDIRECT: Redirects form submissions (POST) to the SPA entry point
 /audit-thank-you /index.html 200
 
-# SPA Fallback for all other routes
+# 2. SPA FALLBACK: All other routes are served by the index.html
 /* /index.html 200
