@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+const FORMSPREE_URL = "https://formspree.io/f/mblqrgkr";
+
 const ApplicationForm = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -17,11 +19,14 @@ const ApplicationForm = () => {
   });
 
   const [score, setScore] = useState(0);
-  const [submitted, setSubmitted] = useState(false); // To prevent double submission/show loading
+  const [submitted, setSubmitted] = useState(false);
 
-  // --- FORM HANDLER: Sends data to Netlify and redirects on success ---
-  const handleSubmit = (e) => {
-    // 1. Calculate Internal Score (Kept for internal use/optional logging)
+  // --- FORM HANDLER: Submits data to Formspree via fetch ---
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // 🛑 CRITICAL: Stop the browser's default HTML submission
+    setSubmitted(true);
+
+    // 1. Calculate Internal Score
     let currentScore = 0;
 
     if (formData.monthlyRevenue === ">$5k") {
@@ -41,10 +46,35 @@ const ApplicationForm = () => {
     }
 
     setScore(currentScore);
-    setSubmitted(true); // Disable button to prevent double click
 
-    // CRITICAL: We DO NOT call e.preventDefault() or fetch().
-    // We let the browser submit the HTML form. Netlify catches it.
+    // 2. Prepare data for submission to Formspree
+    const data = new FormData(e.target);
+    data.append("Internal_Score", currentScore); // Append the calculated score
+
+    try {
+      const response = await fetch(FORMSPREE_URL, {
+        method: "POST",
+        body: data,
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      if (response.ok) {
+        // Success: Force client-side redirect to the thank-you page
+        // This bypasses the Netlify server redirect entirely.
+        window.location.href = "/audit-thank-you";
+      } else {
+        // Handle Formspree API errors (e.g., rate limits, invalid fields)
+        alert("Submission failed. Please check the form and try again.");
+        setSubmitted(false);
+      }
+    } catch (error) {
+      // Handle network errors
+      console.error("Submission error:", error);
+      alert("A network error occurred. Please check your connection.");
+      setSubmitted(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -77,27 +107,12 @@ const ApplicationForm = () => {
         No calls, ever.
       </p>
 
-      {/* 🚨 CRITICAL: NETLIFY FORM ATTRIBUTES ADDED HERE 🚨 */}
-      <form
-        onSubmit={handleSubmit}
-        className="space-y-6"
-        name="website-audit-application"
-        method="POST"
-        data-netlify="true"
-        action="/audit-thank-you"
-      >
-        {/* Hidden field is required by Netlify to identify the form */}
-        <input
-          type="hidden"
-          name="form-name"
-          value="website-audit-application"
-        />
-
+      {/* 🚨 Form no longer has Netlify attributes 🚨 */}
+      <form onSubmit={handleSubmit} className="space-y-6">
         {/* === SECTION 1: CONTACT INFORMATION === */}
         <h3 className="text-xl font-semibold text-gray-800 border-b pb-2 mb-4">
           1. Contact Information
         </h3>
-        {/* ... (Input fields remain the same) ... */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <input
             type="text"
@@ -141,7 +156,6 @@ const ApplicationForm = () => {
         <h3 className="text-xl font-semibold text-gray-800 border-b pb-2 mb-4 pt-6">
           2. Qualification & Budget
         </h3>
-        {/* ... (Select fields remain the same) ... */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Estimated Monthly Revenue
